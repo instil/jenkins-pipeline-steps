@@ -1,0 +1,31 @@
+Build step which automates installation of Android SDK components either through explicit declaration or by
+inspecting Gradle build scripts contained with in the job workspace.
+
+The following components will be installed automatically:
+
+* platform-tools
+* tools
+* emulator
+* extras;android;m2repository
+* extras;google;m2repository
+* extras;intel;Hardware_Accelerated_Execution_Manager
+
+To scan all Gradle files within the job workspace, simply call the step as follows:
+
+```
+node {
+    installAndroidSdkPackages()
+}
+```
+
+To install packages explicitly, just pass a list of the required packages to the `installAndroidSdkPackages`
+like below. Note that package names should match the Android `sdkmanager` format.
+
+```
+node {
+    installAndroidSdkPackages([
+        "build-tools;27",
+        "platform-27"
+    ])
+}
+```
