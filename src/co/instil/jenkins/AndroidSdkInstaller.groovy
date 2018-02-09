@@ -70,9 +70,9 @@ class AndroidSdkInstaller {
     }
 
     void installSdkPackages(List<String> requestedPackages) {
-        def packages = (requiredPackages + requestedPackages).collect { "'$it'" }.join(" ")
-
-        ["$sdkHome/tools/bin/sdkmanager", "--verbose"].addAll(packages).execute()
+        def packages = (requiredPackages + requestedPackages).collect { "'$it'" }
+        def installPackagesCommand = ["$sdkHome/tools/bin/sdkmanager", "--verbose"] + packages
+        installPackagesCommand.execute()
         ["bash", "-c", "yes | $sdkHome/android/sdk/tools/bin/sdkmanager --licenses"].execute()
         ["bash", "-c", "$sdkHome/extras/intel/Hardware_Accelerated_Execution_Manager/silent_install.sh || true"].execute()
     }
