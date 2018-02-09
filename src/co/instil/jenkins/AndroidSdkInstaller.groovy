@@ -6,6 +6,12 @@ import java.util.regex.Pattern
 
 class AndroidSdkInstaller {
 
+    private final String sdkHome
+
+    AndroidSdkInstaller(String sdkHome) {
+        this.sdkHome = sdkHome
+    }
+
     private final requiredPackages = [
             "platform-tools",
             "tools",
@@ -66,7 +72,6 @@ class AndroidSdkInstaller {
     void installSdkPackages(List<String> requestedPackages) {
         def packages = (requiredPackages + requestedPackages).collect { "'$it'" }.join(" ")
 
-        def sdkHome = System.getenv("ANDROID_HOME")
         ["$sdkHome/tools/bin/sdkmanager", "--verbose", packages].execute()
         ["bash", "-c", "yes | $sdkHome/android/sdk/tools/bin/sdkmanager --licenses"].execute()
         ["bash", "-c", "$sdkHome/extras/intel/Hardware_Accelerated_Execution_Manager/silent_install.sh || true"].execute()

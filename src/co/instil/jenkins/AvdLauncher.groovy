@@ -4,7 +4,11 @@ import static java.lang.System.currentTimeMillis
 
 class AvdLauncher {
 
-    private def sdkHome = System.getenv("ANDROID_HOME")
+    private final String sdkHome
+
+    AvdLauncher(String sdkHome) {
+        this.sdkHome = sdkHome
+    }
 
     void executeWithAvd(String name, String hardwareProfile, String systemImage, Closure steps) {
         def emulatorSerial = null
@@ -25,7 +29,7 @@ class AvdLauncher {
     }
 
     private void installSystemImage(String systemImage) {
-        new AndroidSdkInstaller().installSdkPackages([systemImage])
+        new AndroidSdkInstaller(sdkHome).installSdkPackages([systemImage])
     }
 
     private String launchAvd(String name) {

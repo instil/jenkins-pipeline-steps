@@ -1,4 +1,3 @@
-import co.instil.jenkins.AndroidSdkInstaller
 import co.instil.jenkins.AvdLauncher
 
 def call(String hardwareProfile, String systemImage, Closure steps) {
@@ -6,7 +5,8 @@ def call(String hardwareProfile, String systemImage, Closure steps) {
         failBuildWithError("ANDROID_HOME not defined, cannot launch AVD")
     }
 
-    new AvdLauncher().executeWithAvd(env.BUILD_TAG, hardwareProfile, systemImage) { emulatorSerial ->
+    def avdLauncher = new AvdLauncher(env.ANDROID_HOME)
+    avdLauncher.executeWithAvd(env.BUILD_TAG, hardwareProfile, systemImage) { emulatorSerial ->
         // Set ANDROID_SERIAL env var so connectedAndroidTest knows which emulator
         // instance to target if we have multiple AVDs or concurrent jobs.
         env.ANDROID_SERIAL = emulatorSerial

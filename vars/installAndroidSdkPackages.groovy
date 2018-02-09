@@ -5,7 +5,7 @@ def call(List<String> packages = null) {
         failBuildWithError("ANDROID_HOME not defined, cannot install SDK packages")
     }
 
-    def sdkInstaller = new AndroidSdkInstaller()
+    def sdkInstaller = new AndroidSdkInstaller(env.ANDROID_HOME)
     if (packages != null) {
         sdkInstaller.installSdkPackages(packages)
     } else {
