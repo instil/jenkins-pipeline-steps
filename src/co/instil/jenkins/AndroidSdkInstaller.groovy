@@ -2,6 +2,8 @@ package co.instil.jenkins
 
 import groovy.io.FileType
 
+import java.util.regex.Pattern
+
 class AndroidSdkInstaller {
 
     private final requiredPackages = [
@@ -22,8 +24,15 @@ class AndroidSdkInstaller {
     }
 
     private boolean isGradleBuild() {
-        def gradleScripts = new File(".").findAll { it.file && it.name == "build.gradle" }
-        return gradleScripts.size() > 0
+        return workspaceContainsFile(~/build.gradle/)
+    }
+
+    private boolean workspaceContainsFile(Pattern regex) {
+        def fileFound = false
+        new File(".").traverse(type: FileType.FILES, nameFilter: regex) {
+            fileFound = true
+        }
+        return fileFound
     }
 
     private void installSdkPackagesForGradleBuild() {
@@ -47,8 +56,7 @@ class AndroidSdkInstaller {
     }
 
     private boolean isXamarinBuild() {
-        def gradleScripts = new File(".").findAll { it.file && it.name.endsWith(".sln") }
-        return gradleScripts.size() > 0
+        return workspaceContainsFile(~/.*\.sln/)
     }
 
     private void installSdkPackagesForXamarinBuild() {
