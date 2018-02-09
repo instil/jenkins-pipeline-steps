@@ -1,0 +1,17 @@
+Build step for launching Android AVDs - an AVD will be created with a unique name for the build currently
+being executed, launched then destroyed when the nested steps have completed. The step takes three arguments:
+
+* Hardware profile - the ID of an Android SDK hardware profile. Only the default SDK provided hardware profiles are supported which can be found by running `avdmanager list`.
+* System image - the system image to be used for the AVD, this should be in the sdkmanager format e.g. system-images;android-27;default;x86. The system image will be automatically installed if not already available.
+* A closure containing the build steps to execute while the AVD is running.
+
+```
+node {
+    withAvd("Nexus 5X", "system-images;android-27;default;x86") {
+        sh "./gradlew connectedAndroidTest"
+    }
+}
+```
+
+Note that this build step will automatically set the `ANDROID_SERIAL` environment variable so that the Gradle `connectedAndroidTest`
+tasks knows which emulator to target if multiple AVDs have been launched or concurrent builds are in progress for a build node.

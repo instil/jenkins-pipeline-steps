@@ -1,5 +1,5 @@
 Build step which automates installation of Android SDK components either through explicit declaration or by
-inspecting Gradle build scripts contained with in the job workspace.
+scanning the workspace for Gradle and Xamarin projects to extract the required SDK components from project files.
 
 The following components will be installed automatically:
 
@@ -10,7 +10,7 @@ The following components will be installed automatically:
 * extras;google;m2repository
 * extras;intel;Hardware_Accelerated_Execution_Manager
 
-To scan all Gradle files within the job workspace, simply call the step as follows:
+To scan the job workspace for Gradle and Xamarin projects, simply call the step as follows:
 
 ```
 node {
@@ -18,7 +18,7 @@ node {
 }
 ```
 
-To install packages explicitly, just pass a list of the required packages to the `installAndroidSdkPackages`
+To install packages explicitly, just pass a list of the packages to the `installAndroidSdkPackages`
 like below. Note that package names should match the Android `sdkmanager` format.
 
 ```

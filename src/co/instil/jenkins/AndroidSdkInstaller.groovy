@@ -1,5 +1,7 @@
 package co.instil.jenkins
 
+import groovy.io.FileType
+
 class AndroidSdkInstaller {
 
     private final requiredPackages = [
@@ -11,7 +13,20 @@ class AndroidSdkInstaller {
             "extras;intel;Hardware_Accelerated_Execution_Manager"
     ]
 
-    void installSdkPackagesFromGradleScripts() {
+    void scanRepositoryForBuildScripts() {
+        if (isGradleBuild()) {
+            installSdkPackagesForGradleBuild()
+        } else if (isXamarinBuild()) {
+            installSdkPackagesForXamarinBuild()
+        }
+    }
+
+    private boolean isGradleBuild() {
+        def gradleScripts = new File(".").findAll { it.file && it.name == "build.gradle" }
+        return gradleScripts.size() > 0
+    }
+
+    private void installSdkPackagesForGradleBuild() {
         def compileSdkVersions = []
         def buildToolsVersions = []
 
@@ -24,21 +39,26 @@ class AndroidSdkInstaller {
     }
 
     private void forEachGradleScript(Closure closure) {
-        new File(".").eachFileRecurse { file ->
-            if (file.file && file.name == "build.gradle") {
+        new File(".").eachFileRecurse(FileType.FILES) { file ->
+            if (file.name == "build.gradle") {
                 closure(file.getText())
             }
         }
     }
 
-    void installSdkPackages(List<String> requestedPackages) {
-        def sdkHome = System.getenv("ANDROID_HOME")
-        if (sdkHome == null) {
-            throw new IllegalArgumentException("ANDROID_HOME not defined, cannot install SDK packages")
-        }
+    private boolean isXamarinBuild() {
+        def gradleScripts = new File(".").findAll { it.file && it.name.endsWith(".sln") }
+        return gradleScripts.size() > 0
+    }
 
+    private void installSdkPackagesForXamarinBuild() {
+        // TODO: Where do we pull compile SDK and build tools versions from for a Xamarin project?
+    }
+
+    void installSdkPackages(List<String> requestedPackages) {
         def packages = (requiredPackages + requestedPackages).collect { "'$it'" }.join(" ")
 
+        def sdkHome = System.getenv("ANDROID_HOME")
         ["$sdkHome/tools/bin/sdkmanager", "--verbose", packages].execute()
         ["bash", "-c", "yes | $sdkHome/android/sdk/tools/bin/sdkmanager --licenses"].execute()
         ["bash", "-c", "$sdkHome/extras/intel/Hardware_Accelerated_Execution_Manager/silent_install.sh || true"].execute()
