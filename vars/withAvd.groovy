@@ -17,7 +17,7 @@ private def executeWithAvd(String hardwareProfile, String systemImage, Closure s
         // Set ANDROID_SERIAL env var so connectedAndroidTest knows which emulator
         // instance to target if we have multiple AVDs or concurrent jobs.
         env.ANDROID_SERIAL = emulatorSerial
-        steps(emulatorSerial)
+        steps()
     } catch(any) {
         throw any
     } finally {
@@ -43,7 +43,7 @@ private def launchAvd(String avdName) {
     echo "Launching AVD $avdName with serial $emulatorSerial"
 
     timeout(time: 5, unit: "MINUTES") {
-        sh "$ANDROID_HOME/emulator/emulator -avd $avdName -port $emulatorPort -no-window -no-boot-anim -no-audio -writable-system &"
+        sh "$ANDROID_HOME/emulator/emulator -avd $avdName -port $emulatorPort -no-window -no-boot-anim -no-audio -no-snapshot &"
         sh "$ANDROID_HOME/platform-tools/adb -s $emulatorSerial wait-for-device"
         waitUntil {
             def bootCompleted = sh(script: "$ANDROID_HOME/platform-tools/adb -s ${emulatorSerial} shell getprop sys.boot_completed", returnStdout: true)
