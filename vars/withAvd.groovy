@@ -14,8 +14,8 @@ private def executeWithAvd(String hardwareProfile, String systemImage, Closure s
         createAvd(avdName, hardwareProfile, systemImage)
         emulatorSerial = launchAvd(avdName)
 
-        // Set ANDROID_SERIAL env var so connectedAndroidTest knows which emulator
-        // instance to target if we have multiple AVDs or concurrent jobs.
+        // Set ANDROID_SERIAL env var so the Gradle connectedAndroidTest task knows which
+        // emulator instance to target if we have multiple AVDs or concurrent jobs.
         env.ANDROID_SERIAL = emulatorSerial
         steps()
     } catch(any) {

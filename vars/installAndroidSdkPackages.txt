@@ -1,7 +1,7 @@
 Build step which automates installation of Android SDK components either through explicit declaration or by
 scanning the workspace for Gradle and Xamarin projects to extract the required SDK components from project files.
 
-The following components will be installed automatically:
+The following components will be installed and configured automatically:
 
 * platform-tools
 * tools
