@@ -7,7 +7,7 @@ def call(String hardwareProfile, String systemImage, Closure steps) {
 }
 
 private def executeWithAvd(String hardwareProfile, String systemImage, Closure steps) {
-    def avdName = env.BUILD_TAG
+    def avdName = env.BUILD_TAG.replaceAll("%2F", "-")
     def emulatorSerial = null
     try {
         installSystemImage(systemImage)
