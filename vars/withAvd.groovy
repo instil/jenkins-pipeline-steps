@@ -16,8 +16,9 @@ private def executeWithAvd(String hardwareProfile, String systemImage, Closure s
 
         // Set ANDROID_SERIAL env var so the Gradle connectedAndroidTest task knows which
         // emulator instance to target if we have multiple AVDs or concurrent jobs.
-        env.ANDROID_SERIAL = emulatorSerial
-        steps()
+        withEnv(["ANDROID_SERIAL=$emulatorSerial"]) {
+            steps()
+        }
     } catch(any) {
         throw any
     } finally {
@@ -49,6 +50,7 @@ private def launchAvd(String avdName) {
             def bootCompleted = sh(script: "$ANDROID_HOME/platform-tools/adb -s ${emulatorSerial} shell getprop sys.boot_completed", returnStdout: true)
             return bootCompleted.trim() == "1"
         }
+        sh "$ANDROID_HOME/platform-tools/adb -s $emulatorSerial shell input keyevent 82"
     }
 
     return emulatorSerial
