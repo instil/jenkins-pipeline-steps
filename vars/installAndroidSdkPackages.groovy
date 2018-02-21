@@ -51,8 +51,8 @@ private def installSdkPackages(List<String> requestedPackages) {
     echo("Accepting Android SDK licenses")
     sh "yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses"
 
-    echo("Installing HAXM")
-    sh "$ANDROID_HOME/extras/intel/Hardware_Accelerated_Execution_Manager/silent_install.sh || true"
+//    echo("Installing HAXM")
+//    sh "$ANDROID_HOME/extras/intel/Hardware_Accelerated_Execution_Manager/silent_install.sh || true"
 }
 
 private def failBuildWithError(String message) {
