@@ -44,7 +44,7 @@ private def launchAvd(String avdName) {
     echo "Launching AVD $avdName with serial $emulatorSerial"
 
     timeout(time: 5, unit: "MINUTES") {
-        sh "$ANDROID_HOME/emulator/emulator -avd $avdName -port $emulatorPort -memory 2048 -partition-size 4096 -no-window -no-boot-anim -no-audio -no-snapshot &"
+        sh "$ANDROID_HOME/emulator/emulator -avd $avdName -port $emulatorPort -memory 2048 -partition-size 4096 -gpu off -no-window -no-boot-anim -no-audio -no-snapshot &"
         sh "$ANDROID_HOME/platform-tools/adb -s $emulatorSerial wait-for-device"
         waitUntil {
             def bootCompleted = sh(script: "$ANDROID_HOME/platform-tools/adb -s ${emulatorSerial} shell getprop sys.boot_completed", returnStdout: true)
