@@ -1,6 +1,14 @@
-def call(String hardwareProfile, String systemImage, boolean headless = true, Closure steps = {}) {
+def call(Map config, Closure steps) {
     if (env.ANDROID_HOME == null) {
         failBuildWithError("ANDROID_HOME not defined, cannot launch AVD")
+    }
+
+    String hardwareProfile = config.hardwareProfile
+    String systemImage = config.systemImage
+    boolean headless = config.headless ?: true
+
+    if (hardwareProfile == null || systemImage == null) {
+        failBuildWithError("hardwareProfile and systemImage must be provided for launching AVD")
     }
 
     executeWithAvd(hardwareProfile, systemImage, headless, steps)
