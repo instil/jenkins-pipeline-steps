@@ -6,7 +6,7 @@ def call(String hardwareProfile, String systemImage, Closure steps) {
     executeWithAvd(hardwareProfile, systemImage, steps)
 }
 
-private def executeWithAvd(String hardwareProfile, String systemImage, boolean headless = true, Closure steps) {
+private def executeWithAvd(String hardwareProfile, String systemImage, boolean headless = true, Closure steps = {}) {
     def avdName = env.BUILD_TAG.replaceAll("%2F", "-")
     def emulatorSerial = null
     try {
