@@ -1,12 +1,12 @@
-def call(String hardwareProfile, String systemImage, Closure steps) {
+def call(String hardwareProfile, String systemImage, boolean headless = true, Closure steps = {}) {
     if (env.ANDROID_HOME == null) {
         failBuildWithError("ANDROID_HOME not defined, cannot launch AVD")
     }
 
-    executeWithAvd(hardwareProfile, systemImage, steps)
+    executeWithAvd(hardwareProfile, systemImage, headless, steps)
 }
 
-private def executeWithAvd(String hardwareProfile, String systemImage, boolean headless = true, Closure steps = {}) {
+private def executeWithAvd(String hardwareProfile, String systemImage, boolean headless, Closure steps) {
     def avdName = env.BUILD_TAG.replaceAll("%2F", "-")
     def emulatorSerial = null
     try {
