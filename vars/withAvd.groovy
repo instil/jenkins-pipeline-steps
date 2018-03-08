@@ -6,13 +6,13 @@ def call(String hardwareProfile, String systemImage, Closure steps) {
     executeWithAvd(hardwareProfile, systemImage, steps)
 }
 
-private def executeWithAvd(String hardwareProfile, String systemImage, Closure steps) {
+private def executeWithAvd(String hardwareProfile, String systemImage, boolean headless = true, Closure steps) {
     def avdName = env.BUILD_TAG.replaceAll("%2F", "-")
     def emulatorSerial = null
     try {
         installSystemImage(systemImage)
         createAvd(avdName, hardwareProfile, systemImage)
-        emulatorSerial = launchAvd(avdName)
+        emulatorSerial = launchAvd(avdName, headless)
 
         // Set ANDROID_SERIAL env var so the Gradle connectedAndroidTest task knows which
         // emulator instance to target if we have multiple AVDs or concurrent jobs.
@@ -37,14 +37,15 @@ private def createAvd(String avdName, String hardwareProfile, String systemImage
     sh "$ANDROID_HOME/tools/bin/avdmanager create avd -n $avdName -f -k '$systemImage' -d '$hardwareProfile' -c 100M"
 }
 
-private def launchAvd(String avdName) {
+private def launchAvd(String avdName, boolean headless) {
     def emulatorPort = firstAvailablePortInRange(5554, 5682)
     def emulatorSerial = "emulator-${emulatorPort}"
+    def noWindowFlag = headless ? "-no-window" : ""
 
     echo "Launching AVD $avdName with serial $emulatorSerial"
 
     timeout(time: 5, unit: "MINUTES") {
-        sh "$ANDROID_HOME/emulator/emulator -avd $avdName -port $emulatorPort -memory 2048 -partition-size 1024 -no-window -no-boot-anim -no-audio -no-snapshot &"
+        sh "$ANDROID_HOME/emulator/emulator -avd $avdName -port $emulatorPort -memory 2048 -partition-size 1024 $noWindowFlag -no-boot-anim -no-audio -no-snapshot &"
         sh "$ANDROID_HOME/platform-tools/adb -s $emulatorSerial wait-for-device"
         waitUntil {
             def bootCompleted = sh(script: "$ANDROID_HOME/platform-tools/adb -s ${emulatorSerial} shell getprop sys.boot_completed", returnStdout: true)
