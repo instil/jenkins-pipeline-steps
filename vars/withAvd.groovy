@@ -15,7 +15,7 @@ def call(Map config, Closure steps) {
 }
 
 private def executeWithAvd(String hardwareProfile, String systemImage, boolean headless, Closure steps) {
-    def avdName = env.BUILD_TAG.replaceAll("%2F", "-")
+    def avdName = env.BUILD_TAG.replaceAll(/%2F|\s/, "-")
     def emulatorSerial = null
     try {
         installSystemImage(systemImage)
