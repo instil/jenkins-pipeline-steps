@@ -59,6 +59,9 @@ private def launchAvd(String avdName, boolean headless) {
             def bootCompleted = sh(script: "$ANDROID_HOME/platform-tools/adb -s ${emulatorSerial} shell getprop sys.boot_completed", returnStdout: true)
             return bootCompleted.trim() == "1"
         }
+        sh "$ANDROID_HOME/platform-tools/adb -s $emulatorSerial shell settings put global window_animation_scale 0"
+        sh "$ANDROID_HOME/platform-tools/adb -s $emulatorSerial shell settings put global transition_animation_scale 0"
+        sh "$ANDROID_HOME/platform-tools/adb -s $emulatorSerial shell settings put global animator_duration_scale 0"
         sh "$ANDROID_HOME/platform-tools/adb -s $emulatorSerial shell input keyevent 82"
     }
 
