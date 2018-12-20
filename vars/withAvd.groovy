@@ -69,9 +69,11 @@ private def launchAvd(String avdName, boolean headless) {
 }
 
 private def firstAvailablePortInRange(start, end) {
+    def netstatAvailable = sh(script: "command -v netstat", returnStdout: true)
+    def netstatCommand = netstatAvailable ? "netstat" : "ss"
     return sh(
-            script: "(netstat -atn | awk '{printf \"%s\\n%s\\n\", \$4, \$4}' | grep -oE '[0-9]*\$'; seq ${start} ${end}) | sort -n | uniq -u | head -n 1",
-            returnStdout: true
+      script: "(${netstatCommand} -atn | awk '{printf \"%s\\n%s\\n\", \$4, \$4}' | grep -oE '[0-9]*\$'; seq ${start} ${end}) | sort -n | uniq -u | head -n 1",
+      returnStdout: true
     ).trim()
 }
 
