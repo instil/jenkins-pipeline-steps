@@ -70,7 +70,7 @@ private def launchAvd(String avdName, boolean headless) {
 
 private def firstAvailablePortInRange(start, end) {
     return sh(
-            script: "(netstat -atn | awk '{printf \"%s\\n%s\\n\", \$4, \$4}' | grep -oE '[0-9]*\$'; seq ${start} ${end}) | sort -n | uniq -u | head -n 1",
+            script: "(ss -atn | awk '{printf \"%s\\n%s\\n\", \$4, \$4}' | grep -oE '[0-9]*\$'; seq ${start} ${end}) | sort -n | uniq -u | head -n 1",
             returnStdout: true
     ).trim()
 }
