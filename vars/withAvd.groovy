@@ -5,7 +5,7 @@ def call(Map config, Closure steps) {
 
     String hardwareProfile = config.hardwareProfile
     String systemImage = config.systemImage
-    boolean headless = config.headless ?: true
+    boolean headless = config.containsKey('headless') ? config.headless : true
 
     if (hardwareProfile == null || systemImage == null) {
         failBuildWithError("hardwareProfile and systemImage must be provided for launching AVD")
