@@ -1,1 +1,6 @@
-Execute Fastlane Match to install code signing identities and provisioning profiles.
+Execute fastlane match to install code signing identities and provisioning profiles.
+
+The following credentials should be exposed from Jenkins:
+* FASTLANE_MATCH_GIT_URL - the URL for the git repo containing fastlane match signing identities and certificates.
+* FASTLANE_MATCH_PASSWORD - the fastlane match repo password.
+* APPLE_DEV_CENTRE_CREDENTIALS - Apple developer centre credentials exposed as username and password.

@@ -1,15 +1,6 @@
 Build step which automates installation of Android SDK components either through explicit declaration or by
 scanning the workspace for Gradle and Xamarin projects to extract the required SDK components from project files.
 
-The following components will be installed and configured automatically:
-
-* platform-tools
-* tools
-* emulator
-* extras;android;m2repository
-* extras;google;m2repository
-* extras;intel;Hardware_Accelerated_Execution_Manager
-
 To scan the job workspace for Gradle and Xamarin projects, simply call the step as follows:
 
 ```

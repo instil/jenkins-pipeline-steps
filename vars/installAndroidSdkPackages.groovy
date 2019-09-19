@@ -35,31 +35,13 @@ private def installSdkPackagesForGradleBuild() {
 }
 
 private def installSdkPackages(List<String> requestedPackages) {
-    def requiredPackages = [
-            "platform-tools",
-            "tools",
-            "ndk-bundle",
-            "emulator",
-            "extras;android;m2repository",
-            "extras;google;m2repository",
-            "extras;intel;Hardware_Accelerated_Execution_Manager"
-    ]
-    def packages = (requiredPackages + requestedPackages).collect { "'$it'" }.join(" ")
+    def packages = requestedPackages.collect { "'$it'" }.join(" ")
 
     echo("Installing Android SDK packages: $packages")
     sh "$ANDROID_HOME/tools/bin/sdkmanager $packages"
 
     echo("Accepting Android SDK licenses")
     sh "yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses"
-
-    if (!haxmInstalled()) {
-        echo("Installing HAXM")
-        sh "$ANDROID_HOME/extras/intel/Hardware_Accelerated_Execution_Manager/silent_install.sh || true"
-    }
-}
-
-private def haxmInstalled() {
-    return sh(script: "kextstat | grep intelhaxm | wc -l", returnStdout: true).toInteger() > 0
 }
 
 private def failBuildWithError(String message) {
