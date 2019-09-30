@@ -1,0 +1,15 @@
+Build step for interacting with `msbuild` to build Xamarin iOS projects and sign using the default signing identities produced by Fastlane and stored in the `fastlane` keychain.
+
+* (Optional) `solution` - the path to the solution to be built. If omited, this will attempt to find a `.sln` file on disk and the step will fail if nothing is supplied / found.
+* (Optional) `configuration` - the Xamarin build configuration to use, or 'Release' by default.
+* (Optional) `platform` - the platform to build for, or 'iPhone by default'.
+* (Optional) `buildIpa` - a boolean indicating whether or not to build the `.ipa` file – 'true' by default.
+* (Optional) `archive` - a boolean indicating whether or not to archive the build – 'true' by default.
+
+```
+node {
+	stage("iOS: Build/Analyse") {
+    	buildXamarinIos(solution: "./MySolution.sln", configuration: "Beta-Release")
+    }
+}
+```
