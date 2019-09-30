@@ -10,7 +10,7 @@ def call(Map config) {
     boolean buildIpa = config.buildIpa ?: true
     boolean archive = config.archive ?: true
 
-    build(solution, configuration, platform, clean, buildIpa, archive)
+    build(solution, configuration, platform, buildIpa, archive)
 }
 
 private def build(String solution, String configuration, String platform, boolean buildIpa, boolean archive) {
@@ -25,8 +25,8 @@ private def build(String solution, String configuration, String platform, boolea
 private def findSolution() {
 	return sh(script:"find . -type f -name '*.sln'")
 		.split()
-        .toList()
-        .first()
+		.toList()
+		.first()
 }
 
 private def failBuildWithError(String message) {
