@@ -1,4 +1,4 @@
-Build step for interacting with `msbuild` to build Xamarin iOS projects and sign using the default signing identities produced by Fastlane and stored in the `fastlane` keychain.
+Build step for interacting with `msbuild` to build Xamarin iOS projects and sign using the default signing identities produced by Fastlane and stored in the `fastlane` keychain. For this reason, the step relies on the keychain's password being stored in Jenkins' secure credentials as `FASTLANE_KEYCHAIN_PASSWORD`.
 
 * (Optional) `solution` - the path to the solution to be built. If omited, this will attempt to find a `.sln` file on disk and the step will fail if nothing is supplied / found.
 * (Optional) `configuration` - the Xamarin build configuration to use, or 'Release' by default.
