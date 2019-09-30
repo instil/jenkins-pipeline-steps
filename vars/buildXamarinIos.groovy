@@ -1,9 +1,11 @@
 def call(Map config) {
 
     String solution = config.solution ?: findSolution()
-    if (solutionName == null) {
+    if (solution == null) {
     	failBuildWithError("No solution found. Please specify a solution explictly or ensure you are top level directory.")
     }
+
+    echo "Building ${solution} …"
 
     String configuration = config.configuration ?: "Release"
     String platform = config.platform ?: "iPhone"
