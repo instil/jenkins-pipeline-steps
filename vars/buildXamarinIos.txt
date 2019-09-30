@@ -9,7 +9,7 @@ Build step for interacting with `msbuild` to build Xamarin iOS projects and sign
 ```
 node {
 	stage("iOS: Build/Analyse") {
-    	buildXamarinIos(solution: "./MySolution.sln", configuration: "Beta-Release")
+		buildXamarinIos(solution: "./MySolution.sln", configuration: "Beta-Release")
     }
 }
 ```
