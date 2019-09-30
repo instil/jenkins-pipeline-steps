@@ -1,16 +1,16 @@
 def call(Map config) {
 
-    String solution = config.solution ?: findSolution()
+    String solution = config?.solution ?: findSolution()
     if (solution == null) {
     	failBuildWithError("No solution found. Please specify a solution explictly or ensure you are in the top level directory.")
     }
 
     echo "Building ${solution} …"
 
-    String configuration = config.configuration ?: "Release"
-    String platform = config.platform ?: "iPhone"
-    boolean buildIpa = config.buildIpa ?: true
-    boolean archive = config.archive ?: true
+    String configuration = config?.configuration ?: "Release"
+    String platform = config?.platform ?: "iPhone"
+    boolean buildIpa = config?.buildIpa ?: true
+    boolean archive = config?.archive ?: true
 
     build(solution, configuration, platform, buildIpa, archive)
 }
