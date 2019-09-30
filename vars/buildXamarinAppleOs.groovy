@@ -18,7 +18,7 @@ def call(Map config) {
 private def build(String solution, String configuration, String platform, boolean buildIpa, boolean archive) {
 	withCredentials([string(credentialsId: "FASTLANE_KEYCHAIN_PASSWORD", variable: "KEYCHAIN_PASSWORD")]) {
         def keychain = "$HOME/Library/Keychains/fastlane.keychain-db"
-        sh "security unlock-keychain -p $keychainPassword $keychain"
+        sh "security unlock-keychain -p $KEYCHAIN_PASSWORD $keychain"
         sh "msbuild /p:Configuration=$configuration /p:Platform=$platform /p:BuildIpa=$buildIpa /p:ArchiveOnBuild=$archive /t:Clean /t:Build $solution /p:CodesignKeychain=$keychain"
         sh "security lock-keychain $keychain"
     }
