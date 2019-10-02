@@ -27,7 +27,7 @@ def call(Map config) {
 }
 
 private def build(String project, String configuration, String keystorePath, String keystoreCredentialsId, String keystoreAlias) {
-	withCredentials([string(credentialsId: keystoreCredentialsId, variable: "KEYCHAIN_PASSWORD")]) {
+	withCredentials([string(credentialsId: keystoreCredentialsId, variable: "KEYSTORE_PASSWORD")]) {
         sh "msbuild /p:Configuration=$configuration /t:Clean /t:SignAndroidPackage /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias=$keystoreAlias /p:AndroidSigningKeyPass=$KEYSTORE_PASSWORD /p:AndroidSigningKeyStore=$keystorePath /p:AndroidSigningStorePass=$KEYSTORE_PASSWORD $project"
     }
 }
