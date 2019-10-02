@@ -8,11 +8,10 @@ NOTE: This step assumes that the alias key's password is identical to the contai
 * `keystoreCredentialsId` - a Jenkins keychain credentials ID for extracting the keystore password when signing.
 * `keystoreAlias` - the name of the keystore alias.
 
-
 ```
 node {
 	stage("Android: Build/Analyse") {
-		buildXamarinAnadroid(project: "./MyAndroidApp.csproj", configuration: "Beta-Release", keystorePath: "./keystores/release.keystore", keystoreCredentialsId: "MY_ANDROID_APP_KEYCHAIN_PASSWORD", keystoreAlias: "release")
+		buildXamarinAndroid(project: "./MyAndroidApp.csproj", configuration: "Beta-Release", keystorePath: "./keystores/release.keystore", keystoreCredentialsId: "MY_ANDROID_APP_KEYCHAIN_PASSWORD", keystoreAlias: "release")
     }
 }
 ```
