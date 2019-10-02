@@ -1,0 +1,18 @@
+Build step for interacting with `msbuild` to build Xamarin Android projects and sign using a supplied keystore and alias. 
+
+NOTE: This step assumes that the alias key's password is identical to the containing keystore's password.
+
+* `project` - the path to the C# project to be built.
+* (Optional) `configuration` - the Xamarin build configuration to use, or 'Release' by default.
+* `keystorePath` - the path to the keystore for signing
+* `keystoreCredentialsId` - a Jenkins keychain credentials ID for extracting the keystore password when signing.
+* `keystoreAlias` - the name of the keystore alias.
+
+
+```
+node {
+	stage("Android: Build/Analyse") {
+		buildXamarinAnadroid(project: "./MyAndroidApp.csproj", configuration: "Beta-Release", keystorePath: "./keystores/release.keystore", keystoreCredentialsId: "MY_ANDROID_APP_KEYCHAIN_PASSWORD", keystoreAlias: "release")
+    }
+}
+```
