@@ -12,7 +12,7 @@ def call(Map config) {
 
     String keystoreCredentialsId = config?.keystoreCredentialsId
     if (keystoreCredentialsId == null) {
-        failBuildWithError("Please specify a keystore credentials ID for extracting the keystore password from the Jenkin's keychain.")
+        failBuildWithError("Please specify a keystore credentials ID for extracting the keystore password from the Jenkins keychain.")
     }
 
     String keystoreAlias = config?.keystoreAlias
