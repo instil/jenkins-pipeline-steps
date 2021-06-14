@@ -1,7 +1,5 @@
 def call(List<String> packages = []) {
-    if (env.ANDROID_HOME == null) {
-        failBuildWithError("ANDROID_HOME not defined, cannot install SDK packages")
-    }
+    checkSdkInstallation()
 
     if (packages.size() <= 0) {
         scanWorkspaceForPackagesInBuildScripts()
@@ -35,16 +33,40 @@ private def installSdkPackagesForGradleBuild() {
 }
 
 private def installSdkPackages(List<String> requestedPackages) {
-    def packages = requestedPackages.collect { "'$it'" }.join(" ")
+    echo "Listing packages installed on system"
+    String listInstalled = sh(
+            script: "$ANDROID_CMDLINE_TOOLS_ROOT/bin/sdkmanager --list_installed",
+            returnStdout: true
+    ).trim()
+
+    List<String> installedPackages = parseInstalledPackages(listInstalled)
+
+    def packages = requestedPackages.findAll {
+        !installedPackages.contains(it)
+    }.collect { "'$it'" }.join(" ")
+
+    if (packages.size() == 0) {
+        echo "Packackes $requestedPackages are already installed; skipping..."
+        return
+    }
 
     echo("Installing Android SDK packages: $packages")
-    sh "$ANDROID_HOME/tools/bin/sdkmanager $packages"
+    sh "$ANDROID_CMDLINE_TOOLS_ROOT/bin/sdkmanager $packages"
 
     echo("Accepting Android SDK licenses")
-    sh "yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses"
+    sh "yes | $ANDROID_CMDLINE_TOOLS_ROOT/bin/sdkmanager --licenses"
 }
 
 private def failBuildWithError(String message) {
     echo message
     throw new IllegalStateException(message)
+}
+
+@NonCPS
+private List<String> parseInstalledPackages(String sdkmanagerResponse) {
+    def result = []
+    return sdkmanagerResponse.splitEachLine("\\|") {
+        if(it.size() >= 0) result.add(it[0].trim())
+        result
+    }
 }
