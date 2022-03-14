@@ -38,10 +38,10 @@ private def installSdkPackages(List<String> requestedPackages) {
     def packages = requestedPackages.collect { "'$it'" }.join(" ")
 
     echo("Installing Android SDK packages: $packages")
-    sh "$ANDROID_HOME/tools/bin/sdkmanager $packages"
+    sh "sdkmanager $packages"
 
     echo("Accepting Android SDK licenses")
-    sh "yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses"
+    sh "yes | sdkmanager --licenses"
 }
 
 private def failBuildWithError(String message) {
